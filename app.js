@@ -20,6 +20,10 @@ app.use((req, res, next) => {
 });
 
 //import the route file/files
+app.get('/', (req, res) => {
+  res.send('Welcome to Mirian and Jeo API 💍✨');
+});
+
 
 app.use('/api/invitees', inviteesRoutes)
 
