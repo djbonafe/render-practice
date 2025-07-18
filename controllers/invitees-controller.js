@@ -6,9 +6,25 @@ const Invitee = require('../models/invitee');
 const HttpError = require('../models/http-error');
 const { ValidatorsImpl } = require('express-validator/lib/chain');
 
+const getInvitees = async (req, res, next) => {
+  let allInvitees;
+  try {
+    allInvitees = await Invitee.find();
+  } catch (err) {
+    const error = new HttpError('Something went wrong, could not fetch invitees.', 500);
+    return next(error);
+  }
+
+  res.json({
+    invitees: allInvitees.map(invitee =>
+      invitee.toObject({ getters: true })
+    ),
+  });
+};
+
 
 const getInviteeById = async (req, res, next) => {
-    const inviteeId = req.params.pid; 
+    const invId = req.params.invId; 
 
     let invitee; 
     try{
@@ -32,11 +48,13 @@ const getInviteeById = async (req, res, next) => {
 
 const createInvitee = async (req, res, next) => {
     const errors = validationResult(req); 
-    if(!errors.isEmpty()){
-        return next(
-            new HttpError('Invalid inputs passed, please check your data.', 422)
-        )
-    }
+if(!errors.isEmpty()) {
+    const errorMessages = errors.array().map(err => err.msg).join(', ');
+
+    return next(
+      new HttpError(`Invalid inputs: ${errorMessages}`, 422)
+    );
+  }
     const {firstName, lastName, coming, specialRequests} = req.body;
     
     const createdInvitee = new Invitee({
@@ -57,5 +75,30 @@ const createInvitee = async (req, res, next) => {
 
 }
 
+const deleteInvitee = async (req, res, next) => {
+  const invId = req.params.invId;
+  let invitee;
+
+  try {
+    invitee = await Invitee.findByIdAndDelete(invId);
+  } catch (err) {
+    const error = new HttpError('Something went wrong, could not delete the invitee.', 500);
+    return next(error);
+  }
+
+  if (!invitee) {
+    const error = new HttpError(
+      'Could not find invitee for the provided id.',
+      404
+    );
+    return next(error);
+  }
+res.status(200).json({ message: 'Invitee deleted.' });
+
+};
+
+
 exports.createInvitee = createInvitee; 
 exports.getInviteeById = getInviteeById; 
+exports.getInvitees = getInvitees; 
+exports.deleteInvitee = deleteInvitee; 
