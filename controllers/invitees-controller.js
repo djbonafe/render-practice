@@ -67,10 +67,10 @@ if(!errors.isEmpty()) {
     try{
         await createdInvitee.save(); 
         
-    }catch(err){
-        return next(new HttpError('Creating invitee failed, please try again.', 500))
-    }
-
+    }catch (err) {
+  console.error('[Invitee Save Error]:', err);
+  return next(new HttpError('Creating invitee failed, please try again.', 500));
+}
     res.status(201).json({invitee: createdInvitee})
 
 }
