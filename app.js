@@ -1,8 +1,9 @@
+require('dotenv').config()
 const express = require('express')
 const bodyParser = require('body-parser')
 const HttpError = require('./models/http-error'); // Adjust path if needed
 const mongoose = require('mongoose');
-
+const authenticationRoutes = require('./routes/authentication-routes')
 const inviteesRoutes = require('./routes/invitees-routes')
 
 const app = express()
@@ -24,7 +25,7 @@ app.get('/', (req, res) => {
   res.send('Welcome to Mirian and Jeo API 💍✨');
 });
 
-
+app.use('/api/auth', authenticationRoutes)
 app.use('/api/invitees', inviteesRoutes)
 
 
