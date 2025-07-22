@@ -98,7 +98,38 @@ res.status(200).json({ message: 'Invitee deleted.' });
 };
 
 
+const editInvitee = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const errorMessages = errors.array().map(err => err.msg).join(', ');
+    return next(new HttpError(`Invalid inputs: ${errorMessages}`, 422));
+  }
+
+  const invId = req.params.invId;
+  const { firstName, lastName, coming, specialRequest } = req.body;
+
+  let updatedInvitee;
+  try {
+    updatedInvitee = await Invitee.findByIdAndUpdate(
+      invId,
+      {
+        firstName,
+        lastName,
+        coming,
+        specialRequest
+      },
+      { new: true, runValidators: true }
+    );
+  } catch (err) {
+    console.error('[Update Invitee Error]:', err);
+    return next(new HttpError('Updating invitee failed, please try again.', 500));
+  }
+
+}
+
+
 exports.createInvitee = createInvitee; 
 exports.getInviteeById = getInviteeById; 
 exports.getInvitees = getInvitees; 
 exports.deleteInvitee = deleteInvitee; 
+exports.editInvitee = editInvitee;

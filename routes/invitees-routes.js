@@ -1,11 +1,33 @@
 const express = require('express'); 
-const {check} = require('express-validator')
-const inviteesController = require('../controllers/invitees-controller')
+const { check } = require('express-validator');
+const inviteesController = require('../controllers/invitees-controller');
 
 const router = express.Router(); 
 
 router.get('/:invId', inviteesController.getInviteeById); 
-router.get('/', inviteesController.getInvitees)
-router.post('/', [check('firstName').not().isEmpty().isAlphanumeric(), check('lastName').not().isEmpty().isAlphanumeric(), check('coming').not().isEmpty()], inviteesController.createInvitee); 
+router.get('/', inviteesController.getInvitees);
+
+router.post(
+  '/',
+  [
+    check('firstName').not().isEmpty().isAlphanumeric(),
+    check('lastName').not().isEmpty().isAlphanumeric(),
+    check('coming').not().isEmpty()
+  ],
+  inviteesController.createInvitee
+);
+
+router.patch(
+  '/:invId',
+  [
+    check('firstName').optional().isAlphanumeric(),
+    check('lastName').optional().isAlphanumeric(),
+    check('coming').optional().isBoolean(),
+    check('specialRequest').optional().isString()
+  ],
+  inviteesController.editInvitee
+);
+
 router.delete('/:invId', inviteesController.deleteInvitee);
-module.exports = router
+
+module.exports = router;
