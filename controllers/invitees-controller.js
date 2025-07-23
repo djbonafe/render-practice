@@ -51,6 +51,7 @@ const createInvitee = async (req, res, next) => {
 if(!errors.isEmpty()) {
     const errorMessages = errors.array().map(err => err.msg).join(', ');
     console.log(req.body)
+    console.log("its logging the error")
     return next(
       new HttpError(`Invalid inputs: ${errorMessages}`, 422)
       
