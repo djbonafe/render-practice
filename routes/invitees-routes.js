@@ -23,7 +23,7 @@ router.patch(
     check('firstName').optional().isAlphanumeric(),
     check('lastName').optional().isAlphanumeric(),
     check('coming').optional().isBoolean(),
-    check('specialRequest').optional().isString()
+    check('specialRequests').optional().isString()
   ],
   inviteesController.editInvitee
 );
