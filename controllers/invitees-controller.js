@@ -50,9 +50,10 @@ const createInvitee = async (req, res, next) => {
     const errors = validationResult(req); 
 if(!errors.isEmpty()) {
     const errorMessages = errors.array().map(err => err.msg).join(', ');
-
+    console.log(req.body)
     return next(
       new HttpError(`Invalid inputs: ${errorMessages}`, 422)
+      
     );
   }
     const {firstName, lastName, coming, specialRequests} = req.body;
