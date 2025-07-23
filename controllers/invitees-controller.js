@@ -106,7 +106,7 @@ const editInvitee = async (req, res, next) => {
   }
 
   const invId = req.params.invId;
-  const { firstName, lastName, coming, specialRequest } = req.body;
+  const { firstName, lastName, coming, specialRequests } = req.body;
 
   let updatedInvitee;
   try {
@@ -116,7 +116,7 @@ const editInvitee = async (req, res, next) => {
         firstName,
         lastName,
         coming,
-        specialRequest
+        specialRequests
       },
       { new: true, runValidators: true }
     );
