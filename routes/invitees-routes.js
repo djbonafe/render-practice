@@ -10,8 +10,8 @@ router.get('/', inviteesController.getInvitees);
 router.post(
   '/',
   [
-    check('firstName').not().isEmpty().isAlphanumeric(),
-    check('lastName').not().isEmpty().isAlphanumeric(),
+    check('firstName').not().isEmpty().isAlphanumeric('en-US', { ignore: ' ' }),
+    check('lastName').not().isEmpty().isAlphanumeric('en-US', { ignore: ' ' }),
     check('coming').not().isEmpty()
   ],
   inviteesController.createInvitee
