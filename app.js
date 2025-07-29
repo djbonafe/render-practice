@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/auth', authenticationRoutes)
-app.use('/api/invitees', inviteesRoutes)
+app.use('/api/invited', invitedRoutes)
 
 
 app.use((req, res, next) => {
