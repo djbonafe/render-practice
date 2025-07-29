@@ -2,22 +2,22 @@ const {validationResult} = require('express-validator');
 
 const mongoose = require('mongoose')
 
-const Invitee = require('../models/invitee'); 
+const Invited = require('../models/invited'); 
 const HttpError = require('../models/http-error');
 const { ValidatorsImpl } = require('express-validator/lib/chain');
 
-const getInvitees = async (req, res, next) => {
-  let allInvitees;
+const getAllInvited = async (req, res, next) => {
+  let allInvited;
   try {
-    allInvitees = await Invitee.find();
+    allInvited = await Invited.find();
   } catch (err) {
     const error = new HttpError('Something went wrong, could not fetch invitees.', 500);
     return next(error);
   }
 
   res.json({
-    invitees: allInvitees.map(invitee =>
-      invitee.toObject({ getters: true })
+    invitees: allInvited.map(invited =>
+      invited.toObject({ getters: true })
     ),
   });
 };
@@ -46,12 +46,11 @@ const getInviteeById = async (req, res, next) => {
 
 }
 
-const createInvitee = async (req, res, next) => {
+const createInvited = async (req, res, next) => {
     const errors = validationResult(req); 
 if(!errors.isEmpty()) {
     const errorMessages = errors.array().map(err => err.msg).join(', ');
-    console.log(req.body)
-    console.log("its logging the error")
+ 
     return next(
       new HttpError(`Invalid inputs: ${errorMessages}`, 422)
       
@@ -59,7 +58,7 @@ if(!errors.isEmpty()) {
   }
     const {firstName, lastName, coming, specialRequests} = req.body;
     
-    const createdInvitee = new Invitee({
+    const createdInvited = new Invited({
         firstName, 
         lastName, 
         coming, 
