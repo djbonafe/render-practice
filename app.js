@@ -4,7 +4,7 @@ const bodyParser = require('body-parser')
 const HttpError = require('./models/http-error'); // Adjust path if needed
 const mongoose = require('mongoose');
 const authenticationRoutes = require('./routes/authentication-routes')
-const inviteesRoutes = require('./routes/invitees-routes')
+const invitedRoutes = require('./routes/invited-routes')
 
 const app = express()
 app.use(bodyParser.json())
