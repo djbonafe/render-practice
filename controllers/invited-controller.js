@@ -121,12 +121,18 @@ const editInvited = async (req, res, next) => {
       },
       { new: true, runValidators: true }
     );
+
+    if (!updatedInvited) {
+      return next(new HttpError('Invitee not found.', 404));
+    }
+
+    res.status(200).json({ message: 'Invitee updated.', invited: updatedInvited }); // ✅ THIS PART
   } catch (err) {
     console.error('[Update Invited Error]:', err);
     return next(new HttpError('Updating invited failed, please try again.', 500));
   }
+};
 
-}
 
 
 exports.createInvited = createInvited; 
