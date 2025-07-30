@@ -8,7 +8,8 @@ const invitedSchema = new Schema({
     firstName: {type: String, required: true}, 
     lastName: {type: String, required: true}, 
     coming: {type: Boolean, required: true }, 
-    specialRequests: {type: String}
+    specialRequest: {type: String}
+
 })
 
 invitedSchema.plugin(uniqueValidator); 

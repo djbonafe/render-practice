@@ -110,6 +110,7 @@ const editInvited = async (req, res, next) => {
     if (!updatedInvited) {
       return next(new HttpError('Invitee not found.', 404));
     }
+    console.log("🚀 specialRequests from body:", req.body.specialRequest);
 
     res.status(200).json({ message: 'Invited updated.', invited: updatedInvited });
   } catch (err) {
