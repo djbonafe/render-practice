@@ -28,6 +28,6 @@ router.patch(
   invitedController.editInvited
 );
 
-router.delete('/:invId', invitedController.deleteInvitee);
+router.delete('/:invId', invitedController.deleteInvited);
 
 module.exports = router;
