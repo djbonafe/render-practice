@@ -16,33 +16,33 @@ const getAllInvited = async (req, res, next) => {
   }
 
   res.json({
-    invitees: allInvited.map(invited =>
+    allInvited: allInvited.map(invited =>
       invited.toObject({ getters: true })
     ),
   });
 };
 
 
-const getInviteeById = async (req, res, next) => {
+const getInvitedById = async (req, res, next) => {
     const invId = req.params.invId; 
 
-    let invitee; 
+    let invited; 
     try{
-    await Invitee.findById(inviteeId)
+    invited =  await Invited.findById(invId)
     }catch(err){
         const error = new HttpError('Something went wrong, could not find the invitee', 500)
      return next(error)
     }
 
-    if (!invitee) {
+    if (!invited) {
     const error = new HttpError(
-      'Could not find invitee for the provided id.',
+      'Could not find invited for the provided id.',
       404
     );
     return next(error);
   }
 
-  res.json({ invitee: invitee.toObject({ getters: true }) });
+  res.json({ invited: invited.toObject({ getters: true }) });
 
 }
 
@@ -66,40 +66,40 @@ if(!errors.isEmpty()) {
     })
 
     try{
-        await createdInvitee.save(); 
+        await createdInvited.save(); 
         
     }catch (err) {
-  console.error('[Invitee Save Error]:', err);
-  return next(new HttpError('Creating invitee failed, please try again.', 500));
+  console.error('[Invited Save Error]:', err);
+  return next(new HttpError('Creating invited failed, please try again.', 500));
 }
-    res.status(201).json({invitee: createdInvitee})
+    res.status(201).json({invited: createdInvited})
 
 }
 
-const deleteInvitee = async (req, res, next) => {
+const deleteInvited = async (req, res, next) => {
   const invId = req.params.invId;
-  let invitee;
+  let invited;
 
   try {
-    invitee = await Invitee.findByIdAndDelete(invId);
+    invited = await Invited.findByIdAndDelete(invId);
   } catch (err) {
-    const error = new HttpError('Something went wrong, could not delete the invitee.', 500);
+    const error = new HttpError('Something went wrong, could not delete the invited.', 500);
     return next(error);
   }
 
-  if (!invitee) {
+  if (!invited) {
     const error = new HttpError(
-      'Could not find invitee for the provided id.',
+      'Could not find invited for the provided id.',
       404
     );
     return next(error);
   }
-res.status(200).json({ message: 'Invitee deleted.' });
+res.status(200).json({ message: 'Invited deleted.' });
 
 };
 
 
-const editInvitee = async (req, res, next) => {
+const editInvited = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const errorMessages = errors.array().map(err => err.msg).join(', ');
@@ -109,9 +109,9 @@ const editInvitee = async (req, res, next) => {
   const invId = req.params.invId;
   const { firstName, lastName, coming, specialRequests } = req.body;
 
-  let updatedInvitee;
+  let updatedInvited;
   try {
-    updatedInvitee = await Invitee.findByIdAndUpdate(
+    updatedInvited = await Invited.findByIdAndUpdate(
       invId,
       {
         firstName,
@@ -122,15 +122,15 @@ const editInvitee = async (req, res, next) => {
       { new: true, runValidators: true }
     );
   } catch (err) {
-    console.error('[Update Invitee Error]:', err);
-    return next(new HttpError('Updating invitee failed, please try again.', 500));
+    console.error('[Update Invited Error]:', err);
+    return next(new HttpError('Updating invited failed, please try again.', 500));
   }
 
 }
 
 
-exports.createInvitee = createInvitee; 
-exports.getInviteeById = getInviteeById; 
-exports.getInvitees = getInvitees; 
-exports.deleteInvitee = deleteInvitee; 
-exports.editInvitee = editInvitee;
+exports.createInvited = createInvited; 
+exports.getInvitedById = getInvitedById; 
+exports.getAllInvited = getAllInvited; 
+exports.deleteInvited = deleteInvited; 
+exports.editInvited = editInvited;
